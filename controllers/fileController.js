@@ -1,4 +1,4 @@
-const { Folder } = require('../models');
+const { Folder, File } = require('../models');
 
 exports.createFolder = async (req, res) => {
     const { name, parentId } = req.body;
@@ -22,6 +22,19 @@ exports.deleteFolder = async (req, res) => {
 
         await folder.destroy();
         res.status(200).json({ message: 'Folder deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.getFoldersAndFiles = async (req, res) => {
+    const parentId = req.params.parentId || null;
+    const userId = req.user.id;
+
+    try {
+        const folders = await Folder.findAll({ where: { parentId, userId } });
+        const files = await File.findAll({ where: { folderId: parentId, userId } });
+        res.status(200).json({ folders, files });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

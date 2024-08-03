@@ -22,5 +22,6 @@ const File = sequelize.define('File', {
 
 File.belongsTo(User, { foreignKey: 'userId' });
 File.belongsTo(Folder, { foreignKey: 'folderId' });
+//File.belongsToMany(User, { through: SharedItem, foreignKey: 'fileId' });
 
 module.exports = File;

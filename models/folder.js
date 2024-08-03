@@ -20,5 +20,7 @@ const Folder = sequelize.define('Folder', {
 });
 
 Folder.belongsTo(User, { foreignKey: 'userId' });
+Folder.hasMany(Folder, { as: 'subfolders', foreignKey: 'parentId' });
+//Folder.belongsToMany(User, { through: SharedItem, foreignKey: 'folderId' });
 
 module.exports = Folder;

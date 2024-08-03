@@ -10,5 +10,6 @@ router.delete('/folder/:id', authenticateToken, fileController.deleteFolder);
 
 // File routes
 router.post('/file', authenticateToken, fileController.uploadFile);
+router.delete('/file/:id', authenticateToken, fileController.deleteFile);
 
 module.exports = router;

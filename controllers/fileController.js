@@ -75,3 +75,30 @@ exports.uploadFile = (req, res) => {
         });
     });
 };
+
+exports.deleteFile = async (req, res) => {
+    const fileId = req.params.id;
+    const userId = req.user.id;
+
+    try {
+        // Find the file in the database
+        const file = await File.findOne({ where: { id: fileId, userId } });
+        if (!file) return res.status(404).json({ error: 'File not found' });
+
+        // Delete the file from S3
+        const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: file.s3Key,
+        };
+
+        s3.deleteObject(params, async (err, data) => {
+            if (err) return res.status(500).json({ error: err.message });
+
+            // Delete the file record from the database
+            await file.destroy();
+            res.status(200).json({ message: 'File deleted successfully from S3 and database' });
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

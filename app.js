@@ -3,6 +3,7 @@ require('dotenv').config();
 const sequelize = require('./config/db');
 const fileRoutes = require('./routes/fileRoutes');
 const userRoutes = require('./routes/userRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 
 require('./models/user');
 require('./models/folder');
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use('/user', userRoutes);
 app.use('/files', fileRoutes);
+app.use('/search', searchRoutes);
 
 const PORT = process.env.PORT || 3000;
 

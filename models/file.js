@@ -1,19 +1,26 @@
-module.exports = (sequelize, DataTypes) => {
-  const File = sequelize.define('File', {
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const User = require('./user');
+const Folder = require('./folder');
+
+const File = sequelize.define('File', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+    },
     fileName: {
-      type: DataTypes.STRING,
-      allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     s3Key: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  });
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+});
 
-  File.associate = function(models) {
-    File.belongsTo(models.User, { foreignKey: 'userId' });
-    File.belongsTo(models.Folder, { foreignKey: 'folderId' });
-  };
+File.belongsTo(User, { foreignKey: 'userId' });
+File.belongsTo(Folder, { foreignKey: 'folderId' });
 
-  return File;
-};
+module.exports = File;

@@ -2,17 +2,18 @@ const s3 = require('../config/s3');
 const multer = require('multer');
 const path = require('path');
 const crypto = require('crypto');
-const { Folder, File } = require('../models');
+const File = require('../models/file');
+const Folder = require('../models/folder');
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single('file');
 
 exports.createFolder = async (req, res) => {
-    const { name, parentId } = req.body;
+    const { folderName, parentId } = req.body;
     const userId = req.user.id;
 
     try {
-        const folder = await Folder.create({ name, parentId, userId });
+        const folder = await Folder.create({ folderName, parentId, userId });
         res.status(201).json({ message: 'Folder created successfully', folderId: folder.id });
     } catch (err) {
         res.status(500).json({ error: err.message });

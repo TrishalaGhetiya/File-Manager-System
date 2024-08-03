@@ -1,20 +1,24 @@
-module.exports = (sequelize, DataTypes) => {
-  const Folder = sequelize.define('Folder', {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const User = require('./user');
+
+const Folder = sequelize.define('Folder', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+    },
+    folderName: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     parentId: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    }
-  });
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+});
 
-  Folder.associate = function(models) {
-    Folder.belongsTo(models.User, { foreignKey: 'userId' });
-    Folder.hasMany(models.Folder, { foreignKey: 'parentId' });
-    Folder.hasMany(models.File, { foreignKey: 'folderId' });
-  };
+Folder.belongsTo(User, { foreignKey: 'userId' });
 
-  return Folder;
-};
+module.exports = Folder;

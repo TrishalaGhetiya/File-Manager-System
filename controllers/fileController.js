@@ -102,3 +102,22 @@ exports.deleteFile = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.renameFile = async (req, res) => {
+    const { fileId, newName } = req.body;
+    const userId = req.user.id;
+
+    try {
+        // Find the file in the database
+        const file = await File.findOne({ where: { id: fileId, userId } });
+        if (!file) return res.status(404).json({ error: 'File not found' });
+
+        // Update the file name in the database
+        file.fileName = newName;
+        await file.save();
+
+        res.status(200).json({ message: 'File renamed successfully', file });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

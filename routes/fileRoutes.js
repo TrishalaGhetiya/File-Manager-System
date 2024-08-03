@@ -11,5 +11,6 @@ router.delete('/folder/:id', authenticateToken, fileController.deleteFolder);
 // File routes
 router.post('/file', authenticateToken, fileController.uploadFile);
 router.delete('/file/:id', authenticateToken, fileController.deleteFile);
+router.post('/renameFile', authenticateToken, fileController.renameFile);
 
 module.exports = router;
